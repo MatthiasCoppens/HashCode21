@@ -77,18 +77,33 @@ for c in 'ABCDEF':
 
     file_out = open(f'output_{c}', 'w')
 
-    print(len(intersections), file=file_out)
+    #print(len(intersections), file=file_out)
+    total_string = ""
+    intersections_useful = 0
     for intersection, inter_data in intersections.items():
-        print(intersection, file=file_out)
-        print(len(inter_data[0]), file=file_out)
+        #print(len(inter_data[0]), file=file_out)
 
+        count_rules = 0
+        lijnadd = ""
         for street in inter_data[0]:
-            if streets[street][3] < len(inter_data[1]):
+            if streets[street][3] == 0:
+                time = 0
+            elif streets[street][3] < len(inter_data[1]):
                 time = 1
             else:
                 time = streets[street][3] // len(inter_data[1])
 
-            print(f'{street} {time}', file=file_out)
+            if (time != 0):
+                count_rules += 1
+                lijnadd += f'{street} {time}\n'
+                #print(f'{street} {time}', file=file_out)
+
+        if count_rules != 0:
+            intersections_useful += 1
+            total_string += f"{intersection}\n{count_rules}\n{lijnadd}"
+
+    print(intersections_useful, file=file_out)
+    print(total_string[:-1], file=file_out)
 
         # get corresponding intersection
 
