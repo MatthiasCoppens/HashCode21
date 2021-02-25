@@ -31,9 +31,15 @@ for c in 'BCDEF':
         if schedule:
             db2[intersection] = schedule
 
+    initial_cars_per_street = {}
+    for line in lines[nstreets+1:]:
+        cars, street = line[:2]
+        initial_cars_per_street[street] = initial_cars_per_street.get(street, 0) + int(cars)
+
     print(len(db2), file=file_out)
     for intersection, streets in db2.items():
         print(intersection, file=file_out)
         print(len(streets), file=file_out)
-        for street, t in streets.items():
-            print(f'{street} {t}', file=file_out)
+        sorted_streets = sorted(streets.keys(), key=lambda s: -initial_cars_per_street.get(s, 0))
+        for street in sorted_streets:
+            print(f'{street} {streets[street]}', file=file_out)
