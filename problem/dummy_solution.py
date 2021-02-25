@@ -6,7 +6,7 @@ for c in 'BCDEF':
     inp = file_in.read().splitlines()
     lines = [l.split() for l in inp]
     
-    cycle = int(lines[0][0]) // 2
+    cycle = int(lines[0][0]) // 5
     nstreets = int(lines[0][2])
 
     db = {}
