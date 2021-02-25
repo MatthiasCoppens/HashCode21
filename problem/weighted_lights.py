@@ -58,6 +58,8 @@ for c in 'ABCDEF':
 
             initial_queues[line[1]] += 1
             if len(line) > 2:
+                initial_queues[line[2]] += 0.75
+            if len(line) > 3:
                 initial_queues[line[2]] += 0.5
             for street in vehicles[-1][:-1]:
                 streets[street][-1] += 1
