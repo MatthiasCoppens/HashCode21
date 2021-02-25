@@ -1,6 +1,14 @@
+from copy import deepcopy
+
 for c in 'ABCDEF':
 
     filename = f'input_{c}'
+    """
+    drukte initieel
+    key: streetname
+    data: number of cars initially on it
+    """
+    initial_queues = {}
 
     """
     key: streetname
@@ -31,6 +39,7 @@ for c in 'ABCDEF':
             line = file.readline().rstrip().split(" ")
 
             streets[line[2]] = [int(line[0]), int(line[1]), int(line[3]), 0]
+            initial_queues[line[2]] = 0
 
             if int(line[0]) not in intersections:
                 intersections[int(line[0])] = [[], [line[2]], 0]
@@ -45,35 +54,12 @@ for c in 'ABCDEF':
         # read in vehicles
         for _ in range(v):
             line = file.readline().rstrip().split(" ")
-
             vehicles.append(line[1:])
+
+            initial_queues[line[1]] += 1
             for street in vehicles[-1][:-1]:
                 streets[street][-1] += 1
                 intersections[streets[street][1]][-1] += 1
-
-
-    # initial state
-    # check which roads are busy, which not, how long
-    """
-    intersections = dict()
-    intersec_state = dict()
-    time = 0
-    
-    for intersection in intersections.keys():
-        cars_per_street = []
-        for street in intersections[intersection][0]:
-            cars_queued = 0
-            for car in vehicles.keys():
-                if vehicles[car][0] == street:
-                    cars_queued += 1
-            cars_per_street.append(cars_queued)
-    
-        longest_queue = cars_per_street.index(max(cars_per_street))
-        if cars_per_street[longest_queue] != 0:
-            intersec_state[intersection] = (longest_queue, cars_per_street[longest_queue] // len(cars_per_street))
-        else:
-            intersec_state[intersection] = (longest_queue, 1)
-    """
 
     file_out = open(f'output_{c}', 'w')
 
@@ -83,9 +69,12 @@ for c in 'ABCDEF':
     for intersection, inter_data in intersections.items():
         #print(len(inter_data[0]), file=file_out)
 
+        sorted_streets = sorted(inter_data[0], key=lambda s: -initial_queues.get(s, 0))
+        inter_data[0] = sorted_streets
+
         count_rules = 0
         lijnadd = ""
-        for street in inter_data[0]:
+        for street in sorted_streets:
             if streets[street][3] == 0:
                 time = 0
             elif streets[street][3] < len(inter_data[1]):
