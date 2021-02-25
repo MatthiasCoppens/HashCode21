@@ -68,6 +68,8 @@ for c in 'ABCDEF':
     intersections_useful = 0
     for intersection, inter_data in intersections.items():
         #print(len(inter_data[0]), file=file_out)
+        norm_factor = 5
+        normalisation = d // len(inter_data[0])
 
         sorted_streets = sorted(inter_data[0], key=lambda s: -initial_queues.get(s, 0))
         inter_data[0] = sorted_streets
@@ -77,10 +79,10 @@ for c in 'ABCDEF':
         for street in sorted_streets:
             if streets[street][3] == 0:
                 time = 0
-            elif streets[street][3] < len(inter_data[1]):
+            elif streets[street][3] < len(inter_data[0]):
                 time = 1
             else:
-                time = streets[street][3] // len(inter_data[1])
+                time = streets[street][3] // len(inter_data[0])
 
             if (time != 0):
                 count_rules += 1
