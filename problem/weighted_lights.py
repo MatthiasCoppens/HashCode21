@@ -68,8 +68,8 @@ for c in 'ABCDEF':
     intersections_useful = 0
     for intersection, inter_data in intersections.items():
         #print(len(inter_data[0]), file=file_out)
-        norm_factor = 5
-        normalisation = d // len(inter_data[0])
+        #norm_factor = 5
+        #normalisation = d // (len(inter_data[0]) * norm_factor)
 
         sorted_streets = sorted(inter_data[0], key=lambda s: -initial_queues.get(s, 0))
         inter_data[0] = sorted_streets
